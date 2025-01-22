@@ -128,9 +128,12 @@
             measurementId: "G-JM3DLTB3BT"
         };
 
+        // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.getAuth(app);
         const db = firebase.getFirestore(app);
+
+        console.log("Firebase Initialized:", app);
 
         // Switch between Login and Register forms
         function toggleForm() {
@@ -144,13 +147,16 @@
         function registerUser() {
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
+            console.log("Registering user with email:", email);
 
             firebase.createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
+                    console.log("User registered:", userCredential.user);
                     alert('Registration successful!');
                     window.location.reload();
                 })
                 .catch((error) => {
+                    console.error("Registration error:", error);
                     alert('Error: ' + error.message);
                 });
         }
@@ -159,10 +165,12 @@
         function loginUser() {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
+            console.log("Logging in user with email:", email);
 
             firebase.signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
+                    console.log("Login successful:", user);
                     alert('Login successful!');
                     // Redirect to the desired page
                     window.location.href = 'https://ram2020-art.github.io/NokiaRouter/';
@@ -171,6 +179,7 @@
                     saveUserData(user);
                 })
                 .catch((error) => {
+                    console.error("Login error:", error);
                     alert('Error: ' + error.message);
                 });
         }
