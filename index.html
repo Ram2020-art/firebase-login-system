@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login and Register Page</title>
     <style>
+        /* Keep the same CSS as before */
         @import url(https://fonts.googleapis.com/css?family=Poppins:300);
         html {
             height: 100%;
         }
-        body{
-            margin:0;
-            padding:0;
+        body {
+            margin: 0;
+            padding: 0;
             font-family: sans-serif;
             background: linear-gradient(#30142b, #2772a1);
         }
@@ -30,9 +31,9 @@
             width: 400px;
             padding: 40px;
             transform: translate(-50%, -50%);
-            background: rgba(0,0,0,.5);
+            background: rgba(0, 0, 0, .5);
             box-sizing: border-box;
-            box-shadow: 0 15px 25px rgba(0,0,0,.6);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
             border-radius: 10px;
         }
         .form input {
@@ -71,7 +72,7 @@
             overflow: hidden;
             transition: .5s;
             margin-top: 15px;
-            letter-spacing: 2px
+            letter-spacing: 2px;
         }
         .btn:hover {
             background: #289bb8;
@@ -98,7 +99,7 @@
             0% {
                 left: -100%;
             }
-            50%,100% {
+            50%, 100% {
                 left: 100%;
             }
         }
@@ -109,13 +110,13 @@
             height: 100%;
             background: linear-gradient(180deg, transparent, #289bb8);
             animation: btn-anim2 1s linear infinite;
-            animation-delay: .25s
+            animation-delay: .25s;
         }
         @keyframes btn-anim2 {
             0% {
                 top: -100%;
             }
-            50%,100% {
+            50%, 100% {
                 top: 100%;
             }
         }
@@ -126,13 +127,13 @@
             height: 2px;
             background: linear-gradient(270deg, transparent, #289bb8);
             animation: btn-anim3 1s linear infinite;
-            animation-delay: .5s
+            animation-delay: .5s;
         }
         @keyframes btn-anim3 {
             0% {
                 right: -100%;
             }
-            50%,100% {
+            50%, 100% {
                 right: 100%;
             }
         }
@@ -143,13 +144,13 @@
             height: 100%;
             background: linear-gradient(360deg, transparent, #289bb8);
             animation: btn-anim4 1s linear infinite;
-            animation-delay: .75s
+            animation-delay: .75s;
         }
         @keyframes btn-anim4 {
             0% {
                 bottom: -100%;
             }
-            50%,100% {
+            50%, 100% {
                 bottom: 100%;
             }
         }
@@ -164,7 +165,7 @@
                 <input type="text" id="register-username" placeholder="Username *" required/>
                 <input type="email" id="register-email" placeholder="Email *" required/>
                 <input type="password" id="register-password" placeholder="Password *" required/>
-                <a class="btn" href="#" onclick="registerUser()">
+                <a class="btn" href="#" onclick="registerUser(event)">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -177,7 +178,7 @@
                 <h2>Login</h2>
                 <input type="text" id="login-username" placeholder="Username" required />
                 <input type="password" id="login-password" placeholder="Password" required/>
-                <a class="btn" href="#" onclick="loginUser()">
+                <a class="btn" href="#" onclick="loginUser(event)">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -218,7 +219,8 @@
         }
 
         // Register user
-        async function registerUser() {
+        async function registerUser(event) {
+            event.preventDefault();  // Prevent form from submitting normally
             const name = document.getElementById("register-name").value;
             const username = document.getElementById("register-username").value;
             const email = document.getElementById("register-email").value;
@@ -236,15 +238,15 @@
                 });
 
                 alert("User registered successfully!");
-                window.location.href = "https://ram2020-art.github.io/NokiaRouter/";
+                window.location.reload();  // Reload the page on successful registration
             } catch (error) {
-                console.error("Error registering user:", error);
                 alert("Error: " + error.message);
             }
         }
 
         // Login user
-        async function loginUser() {
+        async function loginUser(event) {
+            event.preventDefault();  // Prevent form from submitting normally
             const email = document.getElementById("login-username").value;
             const password = document.getElementById("login-password").value;
 
@@ -252,9 +254,8 @@
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
                 alert("User logged in successfully!");
-                window.location.href = "https://ram2020-art.github.io/NokiaRouter/";
+                window.location.reload();  // Reload the page on successful login
             } catch (error) {
-                console.error("Error logging in user:", error);
                 alert("Error: " + error.message);
             }
         }
@@ -262,6 +263,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // jQuery code for animation (optional)
         $('.message a').click(function() {
             $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
         });
