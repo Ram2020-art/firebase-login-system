@@ -97,7 +97,7 @@
             <h2>Login</h2>
             <input type="email" id="login-email" placeholder="Email" required />
             <input type="password" id="login-password" placeholder="Password" required />
-            <button class="btn" onclick="loginUser()">Login</button>
+            <button class="btn" id="login-btn">Login</button>
             <div class="toggle">Don't have an account? <a href="#" onclick="toggleForm()">Sign Up</a></div>
         </div>
 
@@ -106,7 +106,7 @@
             <h2>Register</h2>
             <input type="email" id="register-email" placeholder="Email" required />
             <input type="password" id="register-password" placeholder="Password" required />
-            <button class="btn" onclick="registerUser()">Sign Up</button>
+            <button class="btn" id="register-btn">Sign Up</button>
             <div class="toggle">Already have an account? <a href="#" onclick="toggleForm()">Login</a></div>
         </div>
     </div>
@@ -144,7 +144,7 @@
         }
 
         // Register user
-        function registerUser() {
+        document.getElementById('register-btn').addEventListener('click', function() {
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
             console.log("Registering user with email:", email);
@@ -159,10 +159,10 @@
                     console.error("Registration error:", error);
                     alert('Error: ' + error.message);
                 });
-        }
+        });
 
         // Login user
-        function loginUser() {
+        document.getElementById('login-btn').addEventListener('click', function() {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             console.log("Logging in user with email:", email);
@@ -182,7 +182,7 @@
                     console.error("Login error:", error);
                     alert('Error: ' + error.message);
                 });
-        }
+        });
 
         // Save user data to Firestore
         function saveUserData(user) {
