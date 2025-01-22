@@ -114,6 +114,8 @@
         .then((userCredential) => {
           alert('Registration successful!');
           console.log('Registered user:', userCredential.user);
+          // Redirect to target page
+          window.location.href = 'https://ram2020-art.github.io/NokiaRouter/';
         })
         .catch((error) => {
           console.error('Registration error:', error);
@@ -131,6 +133,7 @@
         .then((userCredential) => {
           alert('Login successful!');
           console.log('Logged-in user:', userCredential.user);
+          // Redirect to target page
           window.location.href = 'https://ram2020-art.github.io/NokiaRouter/';
         })
         .catch((error) => {
