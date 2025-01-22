@@ -4,6 +4,69 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Firebase Login System</title>
+  <style>
+    /* Dark Theme */
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      color: #ff9800;
+    }
+
+    h2 {
+      color: #03a9f4;
+    }
+
+    #auth-section {
+      background-color: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      background-color: #252525;
+      color: #ffffff;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #03a9f4;
+      color: #ffffff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #0288d1;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js"></script>
 </head>
 <body>
   <h1>Login and Registration</h1>
@@ -24,90 +87,57 @@
     </form>
   </div>
 
-  <!-- Firebase SDKs -->
   <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCRKx9cwmDfIplGlZMGOLEJ2FHpr6LLL3E",
-            authDomain: "remark-d4293.firebaseapp.com",
-            projectId: "remark-d4293",
-            storageBucket: "remark-d4293.firebasestorage.app",
-            messagingSenderId: "307655533150",
-            appId: "1:307655533150:web:12bf2f02c5b75384748acf",
-            measurementId: "G-JM3DLTB3BT"
-        };
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCRKx9cwmDfIplGlZMGOLEJ2FHpr6LLL3E",
+      authDomain: "remark-d4293.firebaseapp.com",
+      projectId: "remark-d4293",
+      storageBucket: "remark-d4293.appspot.com",
+      messagingSenderId: "307655533150",
+      appId: "1:307655533150:web:12bf2f02c5b75384748acf",
+      measurementId: "G-JM3DLTB3BT"
+    };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.getAuth(app);
-        const db = firebase.getFirestore(app);
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.getAuth(app);
+    const db = firebase.getFirestore(app);
 
-        console.log("Firebase Initialized:", app);
+    // Register User
+    document.getElementById('register-form').addEventListener('submit', (e) => {
+      e.preventDefault(); // Prevent form submission
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
 
-        // Switch between Login and Register forms
-        function toggleForm() {
-            const loginForm = document.querySelector('.login-form');
-            const registerForm = document.querySelector('.register-form');
-            loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
-            registerForm.style.display = registerForm.style.display === 'none' ? 'block' : 'none';
-        }
+      firebase.createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert('Registration successful!');
+          console.log('Registered user:', userCredential.user);
+        })
+        .catch((error) => {
+          console.error('Registration error:', error);
+          alert('Error: ' + error.message);
+        });
+    });
 
-        // Register user
-        function registerUser() {
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            console.log("Registering user with email:", email);
+    // Login User
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault(); // Prevent form submission
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
 
-            firebase.createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    console.log("User registered:", userCredential.user);
-                    alert('Registration successful!');
-                    window.location.reload();
-                })
-                .catch((error) => {
-                    console.error("Registration error:", error);
-                    alert('Error: ' + error.message);
-                });
-        }
-
-        // Login user
-        function loginUser() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            console.log("Logging in user with email:", email);
-
-            firebase.signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log("Login successful:", user);
-                    alert('Login successful!');
-                    // Redirect to the desired page
-                    window.location.href = 'https://ram2020-art.github.io/NokiaRouter/';
-                    
-                    // Save user data to Firestore
-                    saveUserData(user);
-                })
-                .catch((error) => {
-                    console.error("Login error:", error);
-                    alert('Error: ' + error.message);
-                });
-        }
-
-        // Save user data to Firestore
-        function saveUserData(user) {
-            const userRef = firebase.doc(db, 'users', user.uid);
-            firebase.setDoc(userRef, {
-                email: user.email,
-                uid: user.uid,
-                lastLogin: new Date()
-            })
-            .then(() => {
-                console.log('User data saved successfully!');
-            })
-            .catch((error) => {
-                console.error('Error saving user data: ', error);
-            });
-        }
-    </script>
+      firebase.signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert('Login successful!');
+          console.log('Logged-in user:', userCredential.user);
+          window.location.href = 'https://ram2020-art.github.io/NokiaRouter/';
+        })
+        .catch((error) => {
+          console.error('Login error:', error);
+          alert('Error: ' + error.message);
+        });
+    });
+  </script>
 </body>
 </html>
